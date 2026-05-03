@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart | Ganga Pustak Bhandar</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">GPB</span>
+          <span>
+            <strong>Ganga Pustak Bhandar</strong>
+            <small>Cart and checkout</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Store</a>
+          <a href="pickup.html">Pickup</a>
+          <a href="about.html">About</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero compact-hero">
+        <div>
+          <p class="eyebrow">Shopping cart</p>
+          <h1>Your Cart</h1>
+          <p class="hero-copy">Books review karke pickup ya delivery order place kariye.</p>
+        </div>
+      </section>
+
+      <section class="cart-layout">
+        <div class="cart-panel">
+          <div class="orders-head">
+            <h2>Items</h2>
+            <button class="btn secondary" id="clearCart" type="button">Clear Cart</button>
+          </div>
+          <div id="cartItems"></div>
+        </div>
+
+        <aside class="checkout-card">
+          <h2>Checkout</h2>
+          <div class="order-summary" id="cartSummary"></div>
+          <form class="order-form checkout-form" id="cartCheckoutForm">
+            <div class="customer-grid">
+              <label>
+                Name
+                <input name="customer_name" type="text" placeholder="Aapka naam" required>
+              </label>
+              <label>
+                Phone
+                <input name="phone" type="tel" placeholder="Mobile number" required>
+              </label>
+            </div>
+            <fieldset class="choice-grid">
+              <legend>Order type</legend>
+              <label>
+                <input type="radio" name="fulfillment_type" value="Pickup" checked>
+                <span><strong>Pickup</strong><small>Near Star Automobiles</small></span>
+              </label>
+              <label>
+                <input type="radio" name="fulfillment_type" value="Delivery">
+                <span><strong>Delivery</strong><small>Satna local delivery</small></span>
+              </label>
+            </fieldset>
+            <label>
+              Address / note
+              <textarea name="address" rows="3" required>Pickup from store</textarea>
+            </label>
+            <label>
+              Pickup slot
+              <select name="pickup_slot" required>
+                <option value="Today, 4 PM - 8 PM">Today, 4 PM - 8 PM</option>
+                <option value="Tomorrow, 10 AM - 1 PM">Tomorrow, 10 AM - 1 PM</option>
+                <option value="Tomorrow, 4 PM - 8 PM">Tomorrow, 4 PM - 8 PM</option>
+              </select>
+            </label>
+            <label>
+              Payment
+              <select name="payment_method" required>
+                <option value="Cash on Pickup">Cash on Pickup</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="UPI on Confirmation">UPI on Confirmation</option>
+              </select>
+            </label>
+            <button class="btn primary place-order" type="submit">Place Cart Order</button>
+            <p class="form-message" id="cartMessage"></p>
+          </form>
+        </aside>
+      </section>
+    </main>
+
+    <script src="cart.js"></script>
+  </body>
+</html>
