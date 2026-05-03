@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orders | Ganga Pustak Bhandar</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">GPB</span>
+          <span>
+            <strong>Ganga Pustak Bhandar</strong>
+            <small>Admin orders dashboard</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Store</a>
+          <button class="nav-button" id="logoutButton" type="button" hidden>Logout</button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="login-panel" id="loginPanel">
+        <form class="login-card" id="loginForm">
+          <p class="eyebrow">Admin only</p>
+          <h1>Login</h1>
+          <p class="hero-copy">Orders dashboard sirf shop admin ke liye hai.</p>
+          <label>
+            Password
+            <input name="password" type="password" placeholder="Admin password" required>
+          </label>
+          <button class="btn primary" type="submit">Open Dashboard</button>
+          <p class="form-message" id="loginMessage"></p>
+        </form>
+      </section>
+
+      <section class="admin-hero" id="adminHero" hidden>
+        <div>
+          <p class="eyebrow">Backend</p>
+          <h1>Orders</h1>
+          <p class="hero-copy">
+            Yahan website se aaye hue saare book orders dikhte hain.
+          </p>
+        </div>
+        <button class="btn primary" id="refreshOrders" type="button">Refresh</button>
+      </section>
+
+      <section class="orders-panel" id="ordersPanel" hidden>
+        <div class="orders-head">
+          <h2>Recent Orders</h2>
+          <span id="orderCount">0 orders</span>
+        </div>
+        <div class="orders-table-wrap">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Book</th>
+                <th>Total</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Pickup / Delivery</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="ordersBody">
+              <tr>
+                <td colspan="9">Loading orders...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
