@@ -1,0 +1,86 @@
+[
+  {
+    "sku": "GPB-CBSE-10-MATH",
+    "title": "CBSE Mathematics Class 10",
+    "author": "Ganga Pustak Bhandar",
+    "category": "school",
+    "stock": 18,
+    "rack": "A1",
+    "price": 95,
+    "mrp": 95,
+    "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+    "worker_note": "Keep with CBSE textbooks"
+  },
+  {
+    "sku": "GPB-ICSE-ENG",
+    "title": "ICSE English Literature Guide",
+    "author": "Ganga Pustak Bhandar",
+    "category": "school",
+    "stock": 12,
+    "rack": "A2",
+    "price": 260,
+    "mrp": 260,
+    "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+    "worker_note": "Check latest syllabus"
+  },
+  {
+    "sku": "GPB-MP-SCI-10",
+    "title": "MP Board Science Class 10",
+    "author": "Ganga Pustak Bhandar",
+    "category": "school",
+    "stock": 24,
+    "rack": "A3",
+    "price": 140,
+    "mrp": 140,
+    "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+    "worker_note": "Fast moving item"
+  },
+  {
+    "sku": "GPB-POLITY-LAX",
+    "title": "Indian Polity",
+    "author": "Ganga Pustak Bhandar",
+    "category": "competitive",
+    "stock": 9,
+    "rack": "C1",
+    "price": 940,
+    "mrp": 940,
+    "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+    "worker_note": "Keep near UPSC section"
+  },
+  {
+    "sku": "GPB-GK-2026",
+    "title": "Samanya Gyan 2026",
+    "author": "Ganga Pustak Bhandar",
+    "category": "competitive",
+    "stock": 30,
+    "rack": "C2",
+    "price": 210,
+    "mrp": 210,
+    "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+    "worker_note": "Counter display"
+  },
+  {
+    "sku": "GPB-NOTEBOOK-PACK",
+    "title": "Premium Notebook Pack",
+    "author": "Ganga Pustak Bhandar",
+    "category": "stationery",
+    "stock": 40,
+    "rack": "S1",
+    "price": 240,
+    "mrp": 240,
+    "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+    "worker_note": "Bundle stock"
+  },
+  {
+    "sku": "ANI",
+    "title": "ANi",
+    "author": "jd",
+    "category": "school",
+    "stock": 1,
+    "rack": "5",
+    "price": 500,
+    "mrp": 500,
+    "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+    "worker_note": ""
+  }
+]

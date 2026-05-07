@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory | Ganga Pustak Bhandar</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">GPB</span>
+          <span>
+            <strong>Ganga Pustak Bhandar</strong>
+            <small>Worker inventory database</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="admin.html">Orders</a>
+          <a href="index.html">Store</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="admin-hero">
+        <div>
+          <p class="eyebrow">Shop database</p>
+          <h1>Inventory</h1>
+          <p class="hero-copy">Workers can check stock, rack location and notes before packing orders.</p>
+        </div>
+      </section>
+
+      <section class="orders-panel">
+        <div class="orders-head">
+          <div>
+            <h2>Add New Book</h2>
+            <p class="dialog-note">New books added here will appear on the store if stock is above zero.</p>
+          </div>
+        </div>
+        <form class="inventory-form" id="addProductForm">
+          <label>SKU<input name="sku" type="text" placeholder="GPB-BOOK-001" required></label>
+          <label>Title<input name="title" type="text" placeholder="Book title" required></label>
+          <label>Author / Publisher<input name="author" type="text" placeholder="Author or publisher" required></label>
+          <label>
+            Category
+            <select name="category" required>
+              <option value="school">School Books</option>
+              <option value="competitive">Competitive Exam Books</option>
+              <option value="hindi">Hindi Literature</option>
+              <option value="fiction">Fiction</option>
+              <option value="stationery">Stationery</option>
+            </select>
+          </label>
+          <label>Stock<input name="stock" type="number" min="0" value="1" required></label>
+          <label>Rack<input name="rack" type="text" placeholder="A1" required></label>
+          <label>Selling Price<input name="price" type="number" min="1" placeholder="250" required></label>
+          <label>MRP<input name="mrp" type="number" min="1" placeholder="300" required></label>
+          <label class="wide-field">Cover Image URL<input name="cover" type="url" placeholder="https://..."></label>
+          <label class="wide-field">Worker Note<input name="worker_note" type="text" placeholder="Where to keep / packing note"></label>
+          <button class="btn primary" type="submit">Add Book</button>
+        </form>
+        <p class="form-message" id="addProductMessage"></p>
+      </section>
+
+      <section class="orders-panel">
+        <div class="orders-head">
+          <h2>Products</h2>
+          <input id="inventorySearch" type="search" placeholder="Search SKU, title or category" />
+        </div>
+        <div class="orders-table-wrap">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Rack</th>
+                <th>Worker note</th>
+                <th>Save</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryBody">
+              <tr><td colspan="7">Loading inventory...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="form-message" id="inventoryMessage"></p>
+      </section>
+    </main>
+
+    <script src="inventory.js"></script>
+  </body>
+</html>

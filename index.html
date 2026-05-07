@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ganga Pustak Bhandar | Satna Book Store</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="top-offer">Free local pickup near Star Automobiles, Satna. Secure payment ready with Razorpay.</div>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="index.html" aria-label="Ganga Pustak Bhandar home">
+          <span class="brand-mark">GPB</span>
+          <span>
+            <strong>Ganga Pustak Bhandar</strong>
+            <small>School, competitive exam books and stationery</small>
+          </span>
+        </a>
+
+        <div class="nav-links" aria-label="Primary navigation">
+          <a href="#books">Books</a>
+          <a href="#categories">Categories</a>
+          <a href="pickup.html">Pickup</a>
+          <a href="about.html">About</a>
+          <a class="cart-link" href="cart.html">Cart <span id="cartCount">0</span></a>
+          <a href="admin.html">Staff Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Satna book store • Online catalogue</p>
+          <h1>Books for every class, exam and reader.</h1>
+          <p class="hero-copy">
+            Buy CBSE, ICSE, MP Board, competitive exam books, Hindi literature,
+            novels, notebooks and stationery from Ganga Pustak Bhandar.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#books">Shop Books</a>
+            <a class="btn secondary" href="cart.html">Open Cart</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Featured books">
+          <img src="https://covers.openlibrary.org/b/isbn/9780143452676-L.jpg" alt="Hindi literature book cover" />
+          <img src="https://covers.openlibrary.org/b/isbn/9780143442295-L.jpg" alt="Indian fiction book cover" />
+          <img src="https://covers.openlibrary.org/b/isbn/9789387779263-L.jpg" alt="Competitive exam book cover" />
+        </div>
+      </section>
+
+      <section class="mega-categories" id="categories">
+        <a href="#books">Competitive Exam Books</a>
+        <a href="#books">School Books</a>
+        <a href="#books">Stationery</a>
+        <a href="#books">Notebooks</a>
+        <a href="#books">Novels</a>
+        <a href="#books">Gift Items</a>
+      </section>
+
+      <section class="trust-strip" aria-label="Store highlights">
+        <div><strong>5000+</strong><span>Books available</span></div>
+        <div><strong>Best price</strong><span>Discounted catalogue</span></div>
+        <div><strong>Secure</strong><span>Razorpay-ready checkout</span></div>
+      </section>
+
+      <section class="toolbar" id="books" aria-label="Book filters">
+        <div>
+          <p class="eyebrow">New arrivals</p>
+          <h2>Popular Books</h2>
+        </div>
+        <div class="filters">
+          <label class="search-box">
+            <span>Search</span>
+            <input id="searchInput" type="search" placeholder="Book, author, exam..." autocomplete="off" />
+          </label>
+          <label class="select-box">
+            <span>Category</span>
+            <select id="categoryFilter">
+              <option value="all">All categories</option>
+              <option value="school">School Books</option>
+              <option value="competitive">Competitive Exam Books</option>
+              <option value="hindi">Hindi Literature</option>
+              <option value="fiction">Fiction</option>
+              <option value="stationery">Stationery</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="book-grid" id="bookGrid" aria-live="polite"></section>
+
+      <section class="categories">
+        <div class="section-heading">
+          <p class="eyebrow">Top publications</p>
+          <h2>Shop by need</h2>
+        </div>
+        <div class="category-grid">
+          <article><h3>CBSE, ICSE & MP Board</h3><p>Textbooks, guides, sample papers and practical files.</p></article>
+          <article><h3>Competitive Exams</h3><p>SSC, Railway, Banking, UPSC foundation, MPPSC and GK books.</p></article>
+          <article><h3>Hindi Literature</h3><p>Poetry, stories, novels and popular Indian authors.</p></article>
+          <article><h3>Stationery</h3><p>Pens, registers, chart paper, art material and office supplies.</p></article>
+        </div>
+      </section>
+
+      <section class="order-band">
+        <div>
+          <p class="eyebrow">Quick order</p>
+          <h2>Need a specific book? Add it to cart or call the store.</h2>
+        </div>
+        <a class="btn primary" href="cart.html">Checkout</a>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="section-heading">
+          <p class="eyebrow">Visit us</p>
+          <h2>Contact</h2>
+        </div>
+        <div class="contact-grid">
+          <div><strong>Address</strong><p>Near Star Automobiles, Satna, Madhya Pradesh</p></div>
+          <div><strong>Phone</strong><p><a href="tel:+919876543210">+91 98765 43210</a></p></div>
+          <div><strong>Timing</strong><p>Monday to Saturday, 9:00 AM - 8:30 PM</p></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Ganga Pustak Bhandar, Satna. Books, stationery and study essentials.</p>
+    </footer>
+
+    <dialog class="book-dialog" id="bookDialog" aria-labelledby="dialogTitle">
+      <button class="dialog-close" id="dialogClose" aria-label="Close book details">x</button>
+      <div class="dialog-body" id="dialogBody"></div>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>
