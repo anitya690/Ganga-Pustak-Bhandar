@@ -416,7 +416,9 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     init_storage()
-    server = ThreadingHTTPServer(("127.0.0.1", 8000), Handler)
-    print("Ganga Pustak Bhandar running at http://127.0.0.1:8000")
-    print("Admin orders page: http://127.0.0.1:8000/admin.html")
+    port = int(os.environ.get("PORT", "8000"))
+    host = "0.0.0.0" if os.environ.get("RENDER") else "127.0.0.1"
+    server = ThreadingHTTPServer((host, port), Handler)
+    print(f"Ganga Pustak Bhandar running on http://{host}:{port}")
+    print(f"Admin orders page: http://{host}:{port}/admin.html")
     server.serve_forever()
