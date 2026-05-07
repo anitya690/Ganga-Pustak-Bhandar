@@ -19,12 +19,87 @@ ADMIN_PASSWORD = "admin123"
 SESSIONS = set()
 
 
+def use_postgres():
+    return bool(os.environ.get("DATABASE_URL"))
+
+
+def get_db():
+    import psycopg
+    from psycopg.rows import dict_row
+
+    return psycopg.connect(os.environ["DATABASE_URL"], row_factory=dict_row)
+
+
 def init_storage():
+    if use_postgres():
+        init_postgres()
+        return
+
     DATA_DIR.mkdir(exist_ok=True)
     ORDERS_PATH.touch(exist_ok=True)
     STATUS_PATH.touch(exist_ok=True)
     if not PRODUCTS_PATH.exists():
         save_products(seed_products())
+
+
+def init_postgres():
+    with get_db() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS products (
+                    sku TEXT PRIMARY KEY,
+                    title TEXT NOT NULL,
+                    author TEXT NOT NULL,
+                    category TEXT NOT NULL,
+                    stock INTEGER NOT NULL DEFAULT 0,
+                    rack TEXT NOT NULL DEFAULT '',
+                    price INTEGER NOT NULL,
+                    mrp INTEGER NOT NULL,
+                    cover TEXT NOT NULL DEFAULT '',
+                    worker_note TEXT NOT NULL DEFAULT ''
+                )
+                """
+            )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS orders (
+                    id SERIAL PRIMARY KEY,
+                    book_title TEXT NOT NULL,
+                    book_author TEXT NOT NULL,
+                    price TEXT NOT NULL,
+                    quantity INTEGER NOT NULL,
+                    total TEXT NOT NULL,
+                    items JSONB NOT NULL DEFAULT '[]'::jsonb,
+                    customer_name TEXT NOT NULL,
+                    phone TEXT NOT NULL,
+                    address TEXT NOT NULL DEFAULT '',
+                    fulfillment_type TEXT NOT NULL,
+                    pickup_slot TEXT NOT NULL DEFAULT '',
+                    payment_method TEXT NOT NULL,
+                    payment_status TEXT NOT NULL DEFAULT 'Pending',
+                    razorpay_payment_id TEXT NOT NULL DEFAULT '',
+                    razorpay_order_id TEXT NOT NULL DEFAULT '',
+                    status TEXT NOT NULL DEFAULT 'New',
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                )
+                """
+            )
+            cursor.execute("SELECT COUNT(*) AS count FROM products")
+            if cursor.fetchone()["count"] == 0:
+                cursor.executemany(
+                    """
+                    INSERT INTO products (
+                        sku, title, author, category, stock, rack,
+                        price, mrp, cover, worker_note
+                    )
+                    VALUES (
+                        %(sku)s, %(title)s, %(author)s, %(category)s, %(stock)s,
+                        %(rack)s, %(price)s, %(mrp)s, %(cover)s, %(worker_note)s
+                    )
+                    """,
+                    seed_products(),
+                )
 
 
 def seed_products():
@@ -39,6 +114,13 @@ def seed_products():
 
 
 def load_products():
+    if use_postgres():
+        init_storage()
+        with get_db() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT * FROM products ORDER BY title")
+                return [normalize_product(product) for product in cursor.fetchall()]
+
     init_storage()
     with PRODUCTS_PATH.open("r", encoding="utf-8") as file:
         products = json.load(file)
@@ -85,6 +167,26 @@ def normalize_product(product):
 
 
 def save_products(products):
+    if use_postgres():
+        init_storage()
+        with get_db() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM products")
+                cursor.executemany(
+                    """
+                    INSERT INTO products (
+                        sku, title, author, category, stock, rack,
+                        price, mrp, cover, worker_note
+                    )
+                    VALUES (
+                        %(sku)s, %(title)s, %(author)s, %(category)s, %(stock)s,
+                        %(rack)s, %(price)s, %(mrp)s, %(cover)s, %(worker_note)s
+                    )
+                    """,
+                    [normalize_product(product) for product in products],
+                )
+        return
+
     DATA_DIR.mkdir(exist_ok=True)
     with PRODUCTS_PATH.open("w", encoding="utf-8") as file:
         json.dump(products, file, indent=2)
@@ -108,6 +210,24 @@ def append_jsonl(path, payload):
 
 
 def load_orders():
+    if use_postgres():
+        init_storage()
+        with get_db() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    """
+                    SELECT
+                        id, book_title, book_author, price, quantity, total,
+                        items, customer_name, phone, address, fulfillment_type,
+                        pickup_slot, payment_method, payment_status,
+                        razorpay_payment_id, razorpay_order_id, status,
+                        TO_CHAR(created_at AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD HH24:MI:SS') AS created_at
+                    FROM orders
+                    ORDER BY id DESC
+                    """
+                )
+                return cursor.fetchall()
+
     orders = read_jsonl(ORDERS_PATH)
     status_by_id = {
         event["id"]: event["status"] for event in read_jsonl(STATUS_PATH)
@@ -236,6 +356,59 @@ class Handler(SimpleHTTPRequestHandler):
                     self.send_json(
                         {"ok": False, "message": "Please fill all order details."},
                         status=400,
+                    )
+                    return
+
+                if use_postgres():
+                    init_storage()
+                    with get_db() as conn:
+                        with conn.cursor() as cursor:
+                            cursor.execute(
+                                """
+                                INSERT INTO orders (
+                                    book_title, book_author, price, quantity, total,
+                                    items, customer_name, phone, address,
+                                    fulfillment_type, pickup_slot, payment_method,
+                                    payment_status, razorpay_payment_id,
+                                    razorpay_order_id, status
+                                )
+                                VALUES (
+                                    %(book_title)s, %(book_author)s, %(price)s,
+                                    %(quantity)s, %(total)s, %(items)s::jsonb,
+                                    %(customer_name)s, %(phone)s, %(address)s,
+                                    %(fulfillment_type)s, %(pickup_slot)s,
+                                    %(payment_method)s, %(payment_status)s,
+                                    %(razorpay_payment_id)s, %(razorpay_order_id)s,
+                                    'New'
+                                )
+                                RETURNING id
+                                """,
+                                {
+                                    "book_title": data["book_title"],
+                                    "book_author": data["book_author"],
+                                    "price": data["price"],
+                                    "quantity": int(data["quantity"]),
+                                    "total": data["total"],
+                                    "items": json.dumps(data.get("items", [])),
+                                    "customer_name": data["customer_name"],
+                                    "phone": data["phone"],
+                                    "address": data.get("address", ""),
+                                    "fulfillment_type": data["fulfillment_type"],
+                                    "pickup_slot": data.get("pickup_slot", ""),
+                                    "payment_method": data["payment_method"],
+                                    "payment_status": data.get("payment_status", "Pending"),
+                                    "razorpay_payment_id": data.get("razorpay_payment_id", ""),
+                                    "razorpay_order_id": data.get("razorpay_order_id", ""),
+                                },
+                            )
+                            order_id = cursor.fetchone()["id"]
+                    self.send_json(
+                        {
+                            "ok": True,
+                            "message": "Order placed successfully.",
+                            "order_id": order_id,
+                        },
+                        status=201,
                     )
                     return
 
@@ -372,6 +545,21 @@ class Handler(SimpleHTTPRequestHandler):
             allowed = {"New", "Confirmed", "Packed", "Completed", "Cancelled"}
             if status not in allowed:
                 self.send_json({"ok": False, "message": "Invalid status."}, status=400)
+                return
+
+            if use_postgres():
+                init_storage()
+                with get_db() as conn:
+                    with conn.cursor() as cursor:
+                        cursor.execute(
+                            "UPDATE orders SET status = %s WHERE id = %s RETURNING id",
+                            (status, int(order_id)),
+                        )
+                        updated = cursor.fetchone()
+                if not updated:
+                    self.send_json({"ok": False, "message": "Order not found."}, status=404)
+                    return
+                self.send_json({"ok": True, "message": "Status updated."})
                 return
 
             numeric_order_id = int(order_id)
