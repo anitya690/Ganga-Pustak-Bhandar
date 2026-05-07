@@ -136,6 +136,179 @@ main {
   margin: 0 auto;
 }
 
+.promo-slider {
+  position: relative;
+  margin: 28px 0 34px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 520ms ease;
+}
+
+.slide {
+  min-width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+  gap: 32px;
+  align-items: center;
+  min-height: 470px;
+  padding: 48px 64px;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(39, 94, 254, 0.18), transparent 26%),
+    linear-gradient(135deg, #ffffff 0%, #e8f6f4 52%, #fef3df 100%);
+}
+
+.slide:nth-child(2) {
+  background:
+    radial-gradient(circle at 80% 18%, rgba(212, 69, 47, 0.16), transparent 27%),
+    linear-gradient(135deg, #ffffff 0%, #fff3ed 48%, #eef2ff 100%);
+}
+
+.slide:nth-child(3) {
+  background:
+    radial-gradient(circle at 80% 20%, rgba(217, 138, 24, 0.18), transparent 27%),
+    linear-gradient(135deg, #ffffff 0%, #edf7ff 50%, #fff7e8 100%);
+}
+
+.slide-copy h1 {
+  max-width: 710px;
+}
+
+.slide-art {
+  min-height: 340px;
+  position: relative;
+  perspective: 1100px;
+}
+
+.slide-art::before {
+  content: "";
+  position: absolute;
+  inset: 38px 12px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--deep-shadow);
+}
+
+.slide-art img {
+  position: absolute;
+  width: 42%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 22px 38px rgba(23, 32, 51, 0.22);
+  transition: transform 280ms ease;
+}
+
+.slide-art img:nth-child(1) {
+  left: 0;
+  top: 76px;
+  transform: rotate(-8deg) translateZ(10px);
+}
+
+.slide-art img:nth-child(2) {
+  left: 29%;
+  top: 20px;
+  z-index: 2;
+  transform: translateZ(42px);
+}
+
+.slide-art img:nth-child(3) {
+  right: 0;
+  top: 88px;
+  transform: rotate(8deg) translateZ(10px);
+}
+
+.slide.is-active .slide-art img:nth-child(1) {
+  animation: bookFloatLeft 3.2s ease-in-out infinite;
+}
+
+.slide.is-active .slide-art img:nth-child(2) {
+  animation: bookFloatCenter 3.2s ease-in-out infinite;
+}
+
+.slide.is-active .slide-art img:nth-child(3) {
+  animation: bookFloatRight 3.2s ease-in-out infinite;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  background: rgba(23, 32, 51, 0.74);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 900;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 3;
+}
+
+.slider-btn:hover {
+  background: var(--green);
+}
+
+.slider-btn.prev {
+  left: 16px;
+}
+
+.slider-btn.next {
+  right: 16px;
+}
+
+.slider-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  z-index: 3;
+}
+
+.slider-dots button {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(23, 32, 51, 0.28);
+  cursor: pointer;
+}
+
+.slider-dots button.active {
+  width: 26px;
+  background: var(--green);
+}
+
+.promo-slider + .hero {
+  display: none;
+}
+
+@keyframes bookFloatLeft {
+  0%, 100% { transform: rotate(-8deg) translateY(0) translateZ(10px); }
+  50% { transform: rotate(-10deg) translateY(-10px) translateZ(28px); }
+}
+
+@keyframes bookFloatCenter {
+  0%, 100% { transform: translateY(0) translateZ(42px) scale(1); }
+  50% { transform: translateY(-14px) translateZ(64px) scale(1.03); }
+}
+
+@keyframes bookFloatRight {
+  0%, 100% { transform: rotate(8deg) translateY(0) translateZ(10px); }
+  50% { transform: rotate(10deg) translateY(-10px) translateZ(28px); }
+}
+
 .hero {
   min-height: calc(100vh - 76px);
   display: grid;
@@ -1107,6 +1280,16 @@ footer {
 }
 
 @media (max-width: 920px) {
+  .slide {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 38px 28px 78px;
+  }
+
+  .slide-art {
+    min-height: 300px;
+  }
+
   .hero {
     min-height: auto;
     grid-template-columns: 1fr;
@@ -1165,6 +1348,28 @@ footer {
 }
 
 @media (max-width: 640px) {
+  .promo-slider {
+    margin-top: 18px;
+  }
+
+  .slide {
+    padding: 28px 18px 72px;
+  }
+
+  .slide-copy h1 {
+    font-size: 40px;
+  }
+
+  .slide-art {
+    min-height: 230px;
+  }
+
+  .slider-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
   .nav {
     align-items: flex-start;
     flex-direction: column;

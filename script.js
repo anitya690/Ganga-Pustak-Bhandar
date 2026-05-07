@@ -107,6 +107,13 @@ const bookDialog = document.querySelector("#bookDialog");
 const dialogBody = document.querySelector("#dialogBody");
 const dialogClose = document.querySelector("#dialogClose");
 const cartCount = document.querySelector("#cartCount");
+const sliderTrack = document.querySelector("#sliderTrack");
+const sliderDots = document.querySelector("#sliderDots");
+const prevSlide = document.querySelector("#prevSlide");
+const nextSlide = document.querySelector("#nextSlide");
+const slides = Array.from(document.querySelectorAll(".slide"));
+let activeSlide = 0;
+let sliderTimer;
 
 function formatMoney(amount) {
   return `Rs. ${amount}`;
@@ -179,6 +186,47 @@ function addToCart(book, quantity = 1) {
   }
 
   writeCart(cart);
+}
+
+function renderSlider() {
+  if (!sliderTrack || !sliderDots || !slides.length) return;
+
+  sliderDots.innerHTML = slides
+    .map(
+      (_, index) =>
+        `<button type="button" class="${index === activeSlide ? "active" : ""}" data-slide="${index}" aria-label="Go to slide ${index + 1}"></button>`
+    )
+    .join("");
+  updateSlider();
+  startSlider();
+}
+
+function updateSlider() {
+  if (!sliderTrack) return;
+  sliderTrack.style.transform = `translateX(-${activeSlide * 100}%)`;
+  slides.forEach((slide, index) => {
+    slide.classList.toggle("is-active", index === activeSlide);
+  });
+  sliderDots?.querySelectorAll("button").forEach((dot, index) => {
+    dot.classList.toggle("active", index === activeSlide);
+  });
+}
+
+function goToSlide(index) {
+  activeSlide = (index + slides.length) % slides.length;
+  updateSlider();
+}
+
+function startSlider() {
+  if (!slides.length) return;
+  window.clearInterval(sliderTimer);
+  sliderTimer = window.setInterval(() => {
+    goToSlide(activeSlide + 1);
+  }, 4200);
+}
+
+function stopSlider() {
+  window.clearInterval(sliderTimer);
 }
 
 function renderBooks() {
@@ -416,6 +464,25 @@ function openBookDetails(book) {
 searchInput.addEventListener("input", renderBooks);
 categoryFilter.addEventListener("change", renderBooks);
 
+prevSlide?.addEventListener("click", () => {
+  goToSlide(activeSlide - 1);
+  startSlider();
+});
+
+nextSlide?.addEventListener("click", () => {
+  goToSlide(activeSlide + 1);
+  startSlider();
+});
+
+sliderDots?.addEventListener("click", (event) => {
+  if (!event.target.matches("button")) return;
+  goToSlide(Number(event.target.dataset.slide));
+  startSlider();
+});
+
+sliderTrack?.addEventListener("mouseenter", stopSlider);
+sliderTrack?.addEventListener("mouseleave", startSlider);
+
 bookGrid.addEventListener("mousemove", (event) => {
   const card = event.target.closest(".book-card");
   if (!card) return;
@@ -472,6 +539,7 @@ bookGrid.addEventListener("keydown", (event) => {
 dialogClose.addEventListener("click", () => bookDialog.close());
 
 loadCatalog().then(() => {
+  renderSlider();
   renderBooks();
   updateCartCount();
 });
